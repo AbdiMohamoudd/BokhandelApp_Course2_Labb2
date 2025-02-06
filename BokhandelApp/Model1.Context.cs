@@ -16,14 +16,7 @@ namespace BokhandelApp
     public partial class BokhandelEntities : DbContext
     {
         public BokhandelEntities()
-            : base("name=BokhandelEntities")
-        {
-        }
-    
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            throw new UnintentionalCodeFirstException();
-        }
+            : base("name=BokhandelEntities") { }
     
         public virtual DbSet<Butiker> Butiker { get; set; }
         public virtual DbSet<Böcker> Böcker { get; set; }
