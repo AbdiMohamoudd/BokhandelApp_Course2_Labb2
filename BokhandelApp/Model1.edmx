@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BokhandelModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Butiker">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Namn" Type="nvarchar" MaxLength="100" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Böcker">
+          <Key>
+            <PropertyRef Name="ISBN" />
+          </Key>
+          <Property Name="ISBN" Type="char" MaxLength="13" Nullable="false" />
+          <Property Name="Titel" Type="nvarchar" MaxLength="100" />
+          <Property Name="Språk" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pris" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Utgivningsdatum" Type="date" />
+          <Property Name="FörfattarID" Type="int" />
+        </EntityType>
+        <EntityType Name="Författare">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Förnamn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Efternamn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Födelsedatum" Type="date" />
+        </EntityType>
+        <EntityType Name="Kunder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Förnamn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Efternamn" Type="nvarchar" MaxLength="50" />
+          <Property Name="Epost" Type="nvarchar" MaxLength="100" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="20" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="LagerSaldo">
+          <Key>
+            <PropertyRef Name="ButikID" />
+            <PropertyRef Name="ISBN" />
+          </Key>
+          <Property Name="ButikID" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="char" MaxLength="13" Nullable="false" />
+          <Property Name="Antal" Type="int" />
+        </EntityType>
+        <EntityType Name="Ordrar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KundID" Type="int" />
+          <Property Name="ISBN" Type="char" MaxLength="13" />
+          <Property Name="Antal" Type="int" />
+          <Property Name="Orderdatum" Type="date" />
+        </EntityType>
+        <Association Name="FK__Böcker__Författa__4AB81AF0">
+          <End Role="Författare" Type="Self.Författare" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Författare">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Böcker">
+              <PropertyRef Name="FörfattarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LagerSald__Butik__4F7CD00D">
+          <End Role="Butiker" Type="Self.Butiker" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LagerSaldo" Type="Self.LagerSaldo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Butiker">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LagerSaldo">
+              <PropertyRef Name="ButikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LagerSaldo__ISBN__5070F446">
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LagerSaldo" Type="Self.LagerSaldo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Böcker">
+              <PropertyRef Name="ISBN" />
+            </Principal>
+            <Dependent Role="LagerSaldo">
+              <PropertyRef Name="ISBN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ordrar__ISBN__5629CD9C">
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ordrar" Type="Self.Ordrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Böcker">
+              <PropertyRef Name="ISBN" />
+            </Principal>
+            <Dependent Role="Ordrar">
+              <PropertyRef Name="ISBN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ordrar__KundID__5535A963">
+          <End Role="Kunder" Type="Self.Kunder" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ordrar" Type="Self.Ordrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kunder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ordrar">
+              <PropertyRef Name="KundID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BokhandelModelStoreContainer">
+          <EntitySet Name="Butiker" EntityType="Self.Butiker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Böcker" EntityType="Self.Böcker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Författare" EntityType="Self.Författare" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kunder" EntityType="Self.Kunder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LagerSaldo" EntityType="Self.LagerSaldo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ordrar" EntityType="Self.Ordrar" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Böcker__Författa__4AB81AF0" Association="Self.FK__Böcker__Författa__4AB81AF0">
+            <End Role="Författare" EntitySet="Författare" />
+            <End Role="Böcker" EntitySet="Böcker" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LagerSald__Butik__4F7CD00D" Association="Self.FK__LagerSald__Butik__4F7CD00D">
+            <End Role="Butiker" EntitySet="Butiker" />
+            <End Role="LagerSaldo" EntitySet="LagerSaldo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LagerSaldo__ISBN__5070F446" Association="Self.FK__LagerSaldo__ISBN__5070F446">
+            <End Role="Böcker" EntitySet="Böcker" />
+            <End Role="LagerSaldo" EntitySet="LagerSaldo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ordrar__ISBN__5629CD9C" Association="Self.FK__Ordrar__ISBN__5629CD9C">
+            <End Role="Böcker" EntitySet="Böcker" />
+            <End Role="Ordrar" EntitySet="Ordrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ordrar__KundID__5535A963" Association="Self.FK__Ordrar__KundID__5535A963">
+            <End Role="Kunder" EntitySet="Kunder" />
+            <End Role="Ordrar" EntitySet="Ordrar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BokhandelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Butiker">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LagerSaldo" Relationship="Self.FK__LagerSald__Butik__4F7CD00D" FromRole="Butiker" ToRole="LagerSaldo" />
+        </EntityType>
+        <EntityType Name="Böcker">
+          <Key>
+            <PropertyRef Name="ISBN" />
+          </Key>
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Titel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Språk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Pris" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Utgivningsdatum" Type="DateTime" Precision="0" />
+          <Property Name="FörfattarID" Type="Int32" />
+          <NavigationProperty Name="Författare" Relationship="Self.FK__Böcker__Författa__4AB81AF0" FromRole="Böcker" ToRole="Författare" />
+          <NavigationProperty Name="LagerSaldo" Relationship="Self.FK__LagerSaldo__ISBN__5070F446" FromRole="Böcker" ToRole="LagerSaldo" />
+          <NavigationProperty Name="Ordrar" Relationship="Self.FK__Ordrar__ISBN__5629CD9C" FromRole="Böcker" ToRole="Ordrar" />
+        </EntityType>
+        <EntityType Name="Författare">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Förnamn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Efternamn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Födelsedatum" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Böcker" Relationship="Self.FK__Böcker__Författa__4AB81AF0" FromRole="Författare" ToRole="Böcker" />
+        </EntityType>
+        <EntityType Name="Kunder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Förnamn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Efternamn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Epost" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ordrar" Relationship="Self.FK__Ordrar__KundID__5535A963" FromRole="Kunder" ToRole="Ordrar" />
+        </EntityType>
+        <EntityType Name="LagerSaldo">
+          <Key>
+            <PropertyRef Name="ButikID" />
+            <PropertyRef Name="ISBN" />
+          </Key>
+          <Property Name="ButikID" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Antal" Type="Int32" />
+          <NavigationProperty Name="Butiker" Relationship="Self.FK__LagerSald__Butik__4F7CD00D" FromRole="LagerSaldo" ToRole="Butiker" />
+          <NavigationProperty Name="Böcker" Relationship="Self.FK__LagerSaldo__ISBN__5070F446" FromRole="LagerSaldo" ToRole="Böcker" />
+        </EntityType>
+        <EntityType Name="Ordrar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KundID" Type="Int32" />
+          <Property Name="ISBN" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <Property Name="Antal" Type="Int32" />
+          <Property Name="Orderdatum" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Böcker" Relationship="Self.FK__Ordrar__ISBN__5629CD9C" FromRole="Ordrar" ToRole="Böcker" />
+          <NavigationProperty Name="Kunder" Relationship="Self.FK__Ordrar__KundID__5535A963" FromRole="Ordrar" ToRole="Kunder" />
+        </EntityType>
+        <Association Name="FK__LagerSald__Butik__4F7CD00D">
+          <End Role="Butiker" Type="Self.Butiker" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LagerSaldo" Type="Self.LagerSaldo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Butiker">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LagerSaldo">
+              <PropertyRef Name="ButikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Böcker__Författa__4AB81AF0">
+          <End Role="Författare" Type="Self.Författare" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Författare">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Böcker">
+              <PropertyRef Name="FörfattarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LagerSaldo__ISBN__5070F446">
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LagerSaldo" Type="Self.LagerSaldo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Böcker">
+              <PropertyRef Name="ISBN" />
+            </Principal>
+            <Dependent Role="LagerSaldo">
+              <PropertyRef Name="ISBN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ordrar__ISBN__5629CD9C">
+          <End Role="Böcker" Type="Self.Böcker" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ordrar" Type="Self.Ordrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Böcker">
+              <PropertyRef Name="ISBN" />
+            </Principal>
+            <Dependent Role="Ordrar">
+              <PropertyRef Name="ISBN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ordrar__KundID__5535A963">
+          <End Role="Kunder" Type="Self.Kunder" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Ordrar" Type="Self.Ordrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kunder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ordrar">
+              <PropertyRef Name="KundID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BokhandelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Butiker" EntityType="Self.Butiker" />
+          <EntitySet Name="Böcker" EntityType="Self.Böcker" />
+          <EntitySet Name="Författare" EntityType="Self.Författare" />
+          <EntitySet Name="Kunder" EntityType="Self.Kunder" />
+          <EntitySet Name="LagerSaldo" EntityType="Self.LagerSaldo" />
+          <EntitySet Name="Ordrar" EntityType="Self.Ordrar" />
+          <AssociationSet Name="FK__LagerSald__Butik__4F7CD00D" Association="Self.FK__LagerSald__Butik__4F7CD00D">
+            <End Role="Butiker" EntitySet="Butiker" />
+            <End Role="LagerSaldo" EntitySet="LagerSaldo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Böcker__Författa__4AB81AF0" Association="Self.FK__Böcker__Författa__4AB81AF0">
+            <End Role="Författare" EntitySet="Författare" />
+            <End Role="Böcker" EntitySet="Böcker" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LagerSaldo__ISBN__5070F446" Association="Self.FK__LagerSaldo__ISBN__5070F446">
+            <End Role="Böcker" EntitySet="Böcker" />
+            <End Role="LagerSaldo" EntitySet="LagerSaldo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ordrar__ISBN__5629CD9C" Association="Self.FK__Ordrar__ISBN__5629CD9C">
+            <End Role="Böcker" EntitySet="Böcker" />
+            <End Role="Ordrar" EntitySet="Ordrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ordrar__KundID__5535A963" Association="Self.FK__Ordrar__KundID__5535A963">
+            <End Role="Kunder" EntitySet="Kunder" />
+            <End Role="Ordrar" EntitySet="Ordrar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BokhandelModelStoreContainer" CdmEntityContainer="BokhandelEntities">
+          <EntitySetMapping Name="Butiker">
+            <EntityTypeMapping TypeName="BokhandelModel.Butiker">
+              <MappingFragment StoreEntitySet="Butiker">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Namn" ColumnName="Namn" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Böcker">
+            <EntityTypeMapping TypeName="BokhandelModel.Böcker">
+              <MappingFragment StoreEntitySet="Böcker">
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Titel" ColumnName="Titel" />
+                <ScalarProperty Name="Språk" ColumnName="Språk" />
+                <ScalarProperty Name="Pris" ColumnName="Pris" />
+                <ScalarProperty Name="Utgivningsdatum" ColumnName="Utgivningsdatum" />
+                <ScalarProperty Name="FörfattarID" ColumnName="FörfattarID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Författare">
+            <EntityTypeMapping TypeName="BokhandelModel.Författare">
+              <MappingFragment StoreEntitySet="Författare">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Förnamn" ColumnName="Förnamn" />
+                <ScalarProperty Name="Efternamn" ColumnName="Efternamn" />
+                <ScalarProperty Name="Födelsedatum" ColumnName="Födelsedatum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kunder">
+            <EntityTypeMapping TypeName="BokhandelModel.Kunder">
+              <MappingFragment StoreEntitySet="Kunder">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Förnamn" ColumnName="Förnamn" />
+                <ScalarProperty Name="Efternamn" ColumnName="Efternamn" />
+                <ScalarProperty Name="Epost" ColumnName="Epost" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LagerSaldo">
+            <EntityTypeMapping TypeName="BokhandelModel.LagerSaldo">
+              <MappingFragment StoreEntitySet="LagerSaldo">
+                <ScalarProperty Name="ButikID" ColumnName="ButikID" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Antal" ColumnName="Antal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ordrar">
+            <EntityTypeMapping TypeName="BokhandelModel.Ordrar">
+              <MappingFragment StoreEntitySet="Ordrar">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="KundID" ColumnName="KundID" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Antal" ColumnName="Antal" />
+                <ScalarProperty Name="Orderdatum" ColumnName="Orderdatum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

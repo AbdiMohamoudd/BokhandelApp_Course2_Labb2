@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="184134f32f5740d191079df1b1ab4b52" Name="Diagram1">
+        <EntityTypeShape EntityType="BokhandelModel.Butiker" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="BokhandelModel.Böcker" Width="1.5" PointX="2.625" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BokhandelModel.Författare" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BokhandelModel.Kunder" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="BokhandelModel.LagerSaldo" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BokhandelModel.Ordrar" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="BokhandelModel.FK__LagerSald__Butik__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="BokhandelModel.FK__Böcker__Författa__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="BokhandelModel.FK__LagerSaldo__ISBN__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="BokhandelModel.FK__Ordrar__ISBN__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="BokhandelModel.FK__Ordrar__KundID__5535A963" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
