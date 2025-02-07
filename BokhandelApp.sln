@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BokhandelApp", "BokhandelApp\BokhandelApp.csproj", "{954D3AEE-B7CC-49F0-ABF7-D60CA2CC19E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BokhandelApp.cs", "BokhandelApp\BokhandelApp.cs.csproj", "{954D3AEE-B7CC-49F0-ABF7-D60CA2CC19E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
